@@ -50,6 +50,8 @@
     state: "latest"
   with_items: "{{ registry_manifests.results }}"
   when: inventory_hostname == groups['kube-master'][0]
+  environment:
+    no_proxy: "{{no_proxy}}"
 
 - name: Registry | Create PVC manifests
   template:
@@ -76,3 +78,5 @@
     - registry_storage_class != none
     - registry_disk_size != none
     - inventory_hostname == groups['kube-master'][0]
+  environment:
+    no_proxy: "{{no_proxy}}"

@@ -61,6 +61,8 @@
     - dnsmasq
     - coredns
     - kubedns
+  environment:
+    no_proxy: "{{no_proxy}}"
 
 - name: Kubernetes Apps | Netchecker
   import_tasks: tasks/netchecker.yml

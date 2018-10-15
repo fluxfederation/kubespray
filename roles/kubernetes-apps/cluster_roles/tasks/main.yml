@@ -50,6 +50,8 @@
   when:
     - inventory_hostname == groups['kube-master'][0]
     - not item|skipped
+  environment:
+    no_proxy: "{{no_proxy}}"
 
 - name: Kubernetes Apps | Add ClusterRoleBinding to admit nodes
   template:
@@ -71,6 +73,8 @@
     - rbac_enabled
     - node_crb_manifest.changed
     - inventory_hostname == groups['kube-master'][0]
+  environment:
+    no_proxy: "{{no_proxy}}"
 
 - name: Kubernetes Apps | Add webhook ClusterRole that grants access to proxy, stats, log, spec, and metrics on a kubelet
   template:
@@ -96,6 +100,8 @@
     - node_webhook_cr_manifest.changed
     - inventory_hostname == groups['kube-master'][0]
   tags: node-webhook
+  environment:
+    no_proxy: "{{no_proxy}}"
 
 - name: Kubernetes Apps | Add ClusterRoleBinding for system:nodes to webhook ClusterRole
   template:
@@ -121,6 +127,8 @@
     - node_webhook_crb_manifest.changed
     - inventory_hostname == groups['kube-master'][0]
   tags: node-webhook
+  environment:
+    no_proxy: "{{no_proxy}}"
 
 - name: Check if vsphere-cloud-provider ClusterRole exists
   command: "{{ bin_dir }}/kubectl get clusterroles system:vsphere-cloud-provider"
@@ -191,3 +199,5 @@
   when:
     - kube_version|version_compare('v1.11.1', '>=')
     - inventory_hostname == groups['kube-master'][0]
+  environment:
+    no_proxy: "{{no_proxy}}"

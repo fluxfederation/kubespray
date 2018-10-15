@@ -9,6 +9,8 @@
     - 'ClusterRoleBinding'
   tags:
     - upgrade
+  environment:
+    no_proxy: "{{no_proxy}}"
 
 - name: Kubernetes Apps | Lay down dashboard template
   template:
@@ -29,3 +31,6 @@
     state: "latest"
   with_items: "{{ manifests.results }}"
   when: inventory_hostname == groups['kube-master'][0]
+  environment:
+    no_proxy: "{{no_proxy}}"
+

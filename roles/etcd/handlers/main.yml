@@ -41,6 +41,9 @@
   until: result.status is defined and result.status == 200
   retries: 10
   delay: 5
+  environment:
+    https_proxy: ""
+    http_proxy: ""
 
 - name: wait for etcd-events up
   uri:
@@ -52,6 +55,9 @@
   until: result.status is defined and result.status == 200
   retries: 10
   delay: 5
+  environment:
+    https_proxy: ""
+    http_proxy: ""
 
 - name: set etcd_secret_changed
   set_fact:
