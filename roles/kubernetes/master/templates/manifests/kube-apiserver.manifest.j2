@@ -20,6 +20,19 @@ spec:
   containers:
   - name: kube-apiserver
     image: {{ hyperkube_image_repo }}:{{ hyperkube_image_tag }}
+    env:
+{% if http_proxy %}
+    - name: http_proxy
+      value: "{{ http_proxy }}"
+{% endif %}
+{% if https_proxy %}
+    - name: https_proxy
+      value: "{{ https_proxy }}"
+{% endif %}
+{% if no_proxy %}
+    - name: no_proxy
+      value: "{{ no_proxy }}"
+{% endif %}
     imagePullPolicy: {{ k8s_image_pull_policy }}
     resources:
       limits:
