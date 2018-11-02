@@ -98,6 +98,8 @@ spec:
               value: "{{ calico_felix_prometheusgometricsenabled }}"
             - name: FELIX_PROMETHEUSPROCESSMETRICSENABLED
               value: "{{ calico_felix_prometheusprocessmetricsenabled }}"
+            - name: FELIX_USAGEREPORTINGENABLED
+              value: "false"
             # Location of the CA certificate for etcd.
             - name: ETCD_CA_CERT_FILE
               valueFrom:
