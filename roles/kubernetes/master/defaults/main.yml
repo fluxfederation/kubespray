@@ -80,7 +80,7 @@ kube_apiserver_admission_control:
   - ServiceAccount
   - DefaultStorageClass
   - >-
-      {%- if kube_version | version_compare('v1.9', '<') -%}
+      {%- if kube_version is version('v1.9', '<') -%}
       GenericAdmissionWebhook
       {%- else -%}
       MutatingAdmissionWebhook,ValidatingAdmissionWebhook
@@ -129,6 +129,17 @@ kube_kubeadm_apiserver_extra_args: {}
 kube_kubeadm_controller_extra_args: {}
 kube_kubeadm_scheduler_extra_args: {}
 
+## Extra control plane host volume mounts
+## Example:
+#apiserver_extra_volumes:
+#  - name: name
+#    hostPath: /host/path
+#    mountPath: /mount/path
+#    writable: false
+apiserver_extra_volumes: {}
+controller_manager_extra_volumes: {}
+scheduler_extra_volumes: {}
+
 ## Encrypting Secret Data at Rest
 kube_encrypt_secret_data: false
 kube_encrypt_token: "{{ lookup('password', credentials_dir + '/kube_encrypt_token.creds length=32 chars=ascii_letters,digits') }}"
@@ -137,3 +148,10 @@ kube_encryption_algorithm: "aescbc"
 
 # You may want to use ca.pem depending on your situation
 kube_front_proxy_ca: "front-proxy-ca.pem"
+
+# If non-empty, will use this string as identification instead of the actual hostname
+kube_override_hostname: >-
+  {%- if cloud_provider is defined and cloud_provider in [ 'aws' ] -%}
+  {%- else -%}
+  {{ inventory_hostname }}
+  {%- endif -%}

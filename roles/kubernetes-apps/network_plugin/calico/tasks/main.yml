@@ -10,7 +10,7 @@
   with_items:
     - "{{ calico_node_manifests.results }}"
   when:
-    - inventory_hostname == groups['kube-master'][0] and not item|skipped
+    - inventory_hostname == groups['kube-master'][0] and not item is skipped
   environment:
     no_proxy: "{{no_proxy}}"
 
